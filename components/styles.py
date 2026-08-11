@@ -377,6 +377,94 @@ button[kind="header"],
   margin-bottom: 0.55rem;
 }
 
+/* —— Instructors —— */
+.mentor-section {
+  margin: 0 0 0.95rem;
+  padding: 1.05rem 0.95rem 1rem;
+  border-radius: 18px;
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  background: linear-gradient(165deg, rgba(11, 17, 32, 0.96), rgba(7, 11, 20, 0.9));
+  scroll-margin-top: 4.5rem;
+}
+.mentor-head { text-align: center; margin-bottom: 0.9rem; }
+.mentor-title {
+  font-family: 'Cormorant Garamond', Georgia, serif !important;
+  font-size: clamp(1.25rem, 3vw, 1.55rem);
+  font-weight: 700;
+  margin: 0.25rem 0 0.35rem;
+}
+.mentor-sub {
+  margin: 0 auto;
+  max-width: 520px;
+  color: var(--muted);
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+.mentor-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+.mentor-card {
+  display: flex;
+  gap: 0.85rem;
+  align-items: flex-start;
+  padding: 0.95rem 0.9rem;
+  border-radius: 16px;
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  background: rgba(15, 23, 42, 0.72);
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+.mentor-card:hover {
+  border-color: rgba(0, 164, 239, 0.4);
+  transform: translateY(-2px);
+}
+.mentor-avatar {
+  flex: 0 0 auto;
+  width: 52px; height: 52px;
+  border-radius: 14px;
+  display: grid; place-items: center;
+  font-weight: 800; font-size: 0.95rem; letter-spacing: 0.04em;
+  color: #fff;
+}
+.mentor-azure .mentor-avatar {
+  background: linear-gradient(145deg, #0078D4, #00A4EF);
+  box-shadow: 0 8px 20px rgba(0, 120, 212, 0.3);
+}
+.mentor-cyan .mentor-avatar {
+  background: linear-gradient(145deg, #0891b2, #22D3EE);
+  box-shadow: 0 8px 20px rgba(34, 211, 238, 0.25);
+}
+.mentor-name {
+  font-weight: 750;
+  font-size: 1.05rem;
+  margin-bottom: 0.15rem;
+}
+.mentor-role {
+  color: var(--cyan);
+  font-size: 0.86rem;
+  font-weight: 650;
+  margin-bottom: 0.25rem;
+}
+.mentor-exp {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #fde68a;
+  background: rgba(161, 98, 7, 0.22);
+  border: 1px solid rgba(234, 179, 8, 0.28);
+  padding: 0.22rem 0.5rem;
+  border-radius: 999px;
+  margin-bottom: 0.4rem;
+}
+.mentor-focus {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.84rem;
+  line-height: 1.45;
+}
+
 .doc-toc {
   border: 1px solid var(--border);
   border-radius: 14px;
@@ -731,8 +819,12 @@ div[data-testid="stExpander"] details summary p { font-weight: 600 !important; }
   .program-banner-head {
     margin-bottom: 0.65rem;
   }
-  .program-visual .etl-stage {
-    padding: 0.65rem 0.45rem 0.6rem;
+  .mentor-grid {
+    grid-template-columns: 1fr;
+  }
+  .mentor-card:hover { transform: none; }
+  .mentor-section {
+    padding: 0.9rem 0.75rem;
   }
   .mhc-btn {
     display: flex; align-items: center; justify-content: center;

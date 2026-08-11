@@ -1,46 +1,31 @@
 # Azure Learnings Academy
 ## Azure Data Engineering Master Class
 
-Premium Streamlit course discovery + learning portal (Phase 1).
+Classic single-page **study material / document viewer** portal (Streamlit).
 
-### Run locally
+### Run
 
 ```bash
 pip install -r requirements.txt
-streamlit run app.py
+python -m streamlit run app.py
 ```
 
-### Deploy to Streamlit Community Cloud
+### What’s on the page
 
-1. Push this repository to GitHub.
-2. Go to [share.streamlit.io](https://share.streamlit.io).
-3. Select the repo, set main file to `app.py`.
-4. Deploy.
+1. Hero  
+2. Sticky Contents navigation (same window)  
+3. Course Information  
+4. **3-Month Learning Plan** (single learning path — no separate Roadmap)  
+5. Complete Syllabus (expandable modules)  
+6. Highlights · Live · Why  
+7. Interview + WhatsApp  
+8. Tools & Applications  
+9. **Coming Soon / Work in Progress** (clubbed)  
+10. Support  
+11. Join Now / Enquiry  
 
-### Folder structure
+No sidebar. External links use `target="_self"` (same window).
 
-```text
-azure-data-engineering-master-class/
-├── app.py
-├── requirements.txt
-├── README.md
-├── .streamlit/config.toml
-├── assets/
-├── content/          # Structured course content
-├── components/       # UI building blocks + CSS
-├── views/            # Page renderers (custom sidebar routing)
-└── utils/            # Navigation, WhatsApp, validators
-```
+### Deploy
 
-> `views/` is used instead of Streamlit's auto `pages/` folder so the premium custom sidebar remains the single navigation system.
-
-### WhatsApp contacts
-
-- https://wa.me/918655448143
-- https://wa.me/918692016111
-
-### Phase 1 scope
-
-Included: Home, Course Info, Roadmap, Syllabus, Why Program, Live Classes, Project, Interviews, Assignments, Tools, Support, SQL/Python practice UI previews, AI Assistant (coming soon), Enquiry form.
-
-Not included yet: login, databases, practice execution engines, AI chat backend, payments, certificates.
+Streamlit Community Cloud → main file `app.py`.

@@ -147,10 +147,10 @@ COURSE_INFO_SECTIONS = [
         "title": "How to Use This Portal",
         "items": [
             "Start with Course Information and the 90-Day Learning Plan",
-            "Follow the Roadmap for the recommended learning sequence",
-            "Open Syllabus modules from the sidebar to explore topics",
+            "Use the Contents bar to jump between chapters on this page",
+            "Expand Syllabus modules to explore topics",
             "Use Tools & Applications for setup references",
-            "Use Enquiry / Join Now or WhatsApp to connect with the team",
+            "Use Join Now or WhatsApp to connect with the team",
         ],
     },
 ]

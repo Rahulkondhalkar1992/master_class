@@ -6,7 +6,7 @@ All learning content lives below the hero — no sidebar, no separate Roadmap pa
 import streamlit as st
 
 from components.cards import render_cards
-from components.hero import render_hero, render_mobile_dock, render_toc
+from components.hero import render_hero, render_mobile_dock, render_program_banner, render_toc
 from components.navbar import render_same_window_link, render_whatsapp_buttons
 from components.syllabus import render_syllabus
 from content.coming_soon import COMING_SOON_ITEMS
@@ -288,6 +288,7 @@ def _render_enquiry() -> None:
 
 def render() -> None:
     render_hero()
+    render_program_banner()
     render_toc()
 
     st.markdown('<div class="doc-paper">', unsafe_allow_html=True)

@@ -133,7 +133,6 @@ def render_etl_animation() -> str:
 def render_hero() -> None:
     badges = "".join(f'<span class="hero-badge">{b}</span>' for b in HOME_HERO_BADGES)
     tech_pills = "".join(f"<span>{t}</span>" for t in HOME_TECH_STRIP)
-    etl = render_etl_animation()
     st.markdown(
         f"""
         <header class="doc-hero" id="top">
@@ -149,7 +148,6 @@ def render_hero() -> None:
             <p class="doc-hero-lead">{COURSE['tagline']}</p>
             <div class="hero-badges">{badges}</div>
             <div class="hero-tech-pills mobile-tech-rail">{tech_pills}</div>
-            {etl}
             <div class="mobile-hero-cta">
               <a class="mhc-btn mhc-primary" href="#sec-plan" target="_self">🗓️ 90-Day Plan</a>
               <a class="mhc-btn" href="#sec-syllabus" target="_self">📚 Syllabus</a>
@@ -157,6 +155,28 @@ def render_hero() -> None:
             </div>
           </div>
         </header>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def render_program_banner() -> None:
+    """Clean program title + animated ETL visual above the chapter TOC."""
+    etl = render_etl_animation()
+    st.markdown(
+        f"""
+        <section class="program-banner" aria-label="Program overview">
+          <div class="program-banner-head">
+            <div class="program-kicker">Official Curriculum</div>
+            <h2 class="program-title">Azure Data Engineering Master Program</h2>
+            <p class="program-sub">
+              A live, practical learning path across ADF · Databricks · Spark · SQL · Delta Lake
+            </p>
+          </div>
+          <div class="program-visual">
+            {etl}
+          </div>
+        </section>
         """,
         unsafe_allow_html=True,
     )

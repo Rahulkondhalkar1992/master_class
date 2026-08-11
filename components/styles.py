@@ -330,6 +330,53 @@ button[kind="header"],
 }
 
 /* —— Sticky TOC —— */
+/* —— Program banner (above TOC) —— */
+.program-banner {
+  margin: 0 0 0.85rem;
+  padding: 1.15rem 1rem 1rem;
+  border-radius: 18px;
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  background:
+    linear-gradient(165deg, rgba(11, 17, 32, 0.96), rgba(7, 11, 20, 0.92));
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.22);
+}
+.program-banner-head {
+  text-align: center;
+  margin-bottom: 0.85rem;
+}
+.program-kicker {
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 650;
+  margin-bottom: 0.4rem;
+}
+.program-title {
+  font-family: 'Cormorant Garamond', Georgia, serif !important;
+  font-size: clamp(1.45rem, 3.5vw, 1.95rem);
+  font-weight: 700;
+  margin: 0 0 0.4rem;
+  letter-spacing: -0.015em;
+  color: var(--text);
+  line-height: 1.2;
+}
+.program-sub {
+  margin: 0 auto;
+  max-width: 520px;
+  color: var(--muted);
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+.program-visual .etl-stage {
+  margin: 0;
+  border-radius: 14px;
+  background: rgba(5, 10, 22, 0.65);
+}
+.program-visual .etl-live {
+  margin-bottom: 0.55rem;
+}
+
 .doc-toc {
   border: 1px solid var(--border);
   border-radius: 14px;
@@ -667,6 +714,25 @@ div[data-testid="stExpander"] details summary p { font-weight: 600 !important; }
     grid-template-columns: 1.2fr 1fr 0.85fr;
     gap: 0.4rem;
     margin-top: 0.85rem;
+  }
+
+  .program-banner {
+    margin-bottom: 0.7rem;
+    padding: 0.95rem 0.75rem 0.8rem;
+    border-radius: 16px;
+  }
+  .program-title {
+    font-size: clamp(1.35rem, 6vw, 1.65rem);
+  }
+  .program-sub {
+    font-size: 0.82rem;
+    margin-bottom: 0.15rem;
+  }
+  .program-banner-head {
+    margin-bottom: 0.65rem;
+  }
+  .program-visual .etl-stage {
+    padding: 0.65rem 0.45rem 0.6rem;
   }
   .mhc-btn {
     display: flex; align-items: center; justify-content: center;

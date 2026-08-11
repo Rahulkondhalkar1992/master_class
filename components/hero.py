@@ -1,6 +1,7 @@
 """Document portal hero + sticky TOC + mobile action dock."""
 
 import streamlit as st
+import streamlit.components.v1 as components
 
 from content.course import COURSE
 from content.home import HOME_HERO_BADGES, HOME_TECH_STRIP
@@ -18,116 +19,136 @@ TOC_ITEMS = [
     ("#sec-join", "08", "Join"),
 ]
 
-# Brand-colored SVG marks (inline — no external logo downloads)
-ICON_ADF = """
-<svg viewBox="0 0 48 48" class="etl-svg" aria-hidden="true">
-  <rect x="4" y="8" width="16" height="12" rx="2" fill="#0078D4"/>
-  <rect x="28" y="8" width="16" height="12" rx="2" fill="#50E6FF"/>
-  <rect x="16" y="28" width="16" height="12" rx="2" fill="#005A9E"/>
-  <path d="M20 14h8M24 14v14" stroke="#F8FAFC" stroke-width="2.2" stroke-linecap="round"/>
-  <circle cx="12" cy="14" r="2" fill="#fff"/><circle cx="36" cy="14" r="2" fill="#003A6C"/>
-</svg>
-"""
 
-ICON_DATABRICKS = """
-<svg viewBox="0 0 48 48" class="etl-svg" aria-hidden="true">
-  <path d="M8 34 L24 10 L40 34 Z" fill="#FF3621"/>
-  <path d="M14 34 L24 18 L34 34 Z" fill="#FF6B5A"/>
-  <rect x="20" y="30" width="8" height="8" rx="1" fill="#FFFFFF"/>
-  <path d="M10 38h28" stroke="#FF3621" stroke-width="2.5" stroke-linecap="round"/>
-</svg>
-"""
-
-ICON_SQL = """
-<svg viewBox="0 0 48 48" class="etl-svg" aria-hidden="true">
-  <ellipse cx="24" cy="12" rx="14" ry="6" fill="#CC2927"/>
-  <path d="M10 12v18c0 3.3 6.3 6 14 6s14-2.7 14-6V12" fill="#A52321"/>
-  <ellipse cx="24" cy="12" rx="14" ry="6" fill="#F24C4A"/>
-  <ellipse cx="24" cy="20" rx="14" ry="5" fill="none" stroke="#FF8A88" stroke-width="1.5"/>
-  <ellipse cx="24" cy="28" rx="14" ry="5" fill="none" stroke="#FF8A88" stroke-width="1.5"/>
-  <text x="24" y="27" text-anchor="middle" fill="#fff" font-size="9" font-weight="700" font-family="Arial">SQL</text>
-</svg>
-"""
-
-ICON_SPARK = """
-<svg viewBox="0 0 48 48" class="etl-svg" aria-hidden="true">
-  <circle cx="24" cy="24" r="5" fill="#E25A1C"/>
-  <g stroke="#E25A1C" stroke-width="3.2" stroke-linecap="round">
-    <path d="M24 6v8M24 34v8M6 24h8M34 24h8"/>
-    <path d="M11 11l6 6M31 31l6 6M37 11l-6 6M17 31l-6 6"/>
-  </g>
-  <circle cx="24" cy="24" r="2.5" fill="#FFD2B8"/>
-</svg>
-"""
-
-ICON_LAKE = """
-<svg viewBox="0 0 48 48" class="etl-svg" aria-hidden="true">
-  <path d="M8 20c4-8 12-10 16-10s12 2 16 10c-2 10-8 18-16 18S10 30 8 20z" fill="#0078D4"/>
-  <path d="M12 22c3-5 8-7 12-7s9 2 12 7" fill="none" stroke="#50E6FF" stroke-width="2"/>
-  <path d="M14 28c2 4 5 6 10 6s8-2 10-6" fill="none" stroke="#9FEAF9" stroke-width="1.8"/>
-</svg>
-"""
-
-ICON_SOURCE = """
-<svg viewBox="0 0 48 48" class="etl-svg" aria-hidden="true">
-  <rect x="8" y="10" width="32" height="28" rx="4" fill="#334155"/>
-  <rect x="12" y="14" width="24" height="4" rx="1" fill="#22D3EE"/>
-  <rect x="12" y="22" width="18" height="3" rx="1" fill="#64748B"/>
-  <rect x="12" y="28" width="14" height="3" rx="1" fill="#64748B"/>
-  <circle cx="34" cy="30" r="5" fill="#22C55E"/>
-</svg>
-"""
-
-
-def _etl_node(name: str, label: str, icon_svg: str, delay: str = "0s") -> str:
-    return f"""
-    <div class="etl-node etl-{name}" style="--d:{delay}">
-      <div class="etl-icon">{icon_svg}</div>
-      <div class="etl-label">{label}</div>
-      <div class="etl-pulse"></div>
+def _etl_iframe_html() -> str:
+    """Self-contained HTML for components.html (avoids Streamlit markdown sanitizer)."""
+    return """
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: Outfit, Segoe UI, sans-serif;
+    background: transparent;
+    color: #F8FAFC;
+  }
+  .stage {
+    border: 1px solid rgba(0,164,239,0.28);
+    border-radius: 14px;
+    padding: 12px 10px 10px;
+    background: linear-gradient(180deg, rgba(8,16,32,0.98), rgba(11,17,32,0.92));
+  }
+  .live {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 11px; font-weight: 750; letter-spacing: 0.12em; color: #86efac;
+    margin-bottom: 10px;
+  }
+  .dot {
+    width: 8px; height: 8px; border-radius: 50%; background: #22c55e;
+    animation: blink 1.6s ease-out infinite;
+  }
+  @keyframes blink {
+    0% { box-shadow: 0 0 0 0 rgba(34,197,94,0.55); }
+    70% { box-shadow: 0 0 0 8px rgba(34,197,94,0); }
+    100% { box-shadow: 0 0 0 0 rgba(34,197,94,0); }
+  }
+  .track {
+    display: flex; align-items: center; gap: 2px;
+    overflow-x: auto; padding-bottom: 4px; scrollbar-width: none;
+  }
+  .track::-webkit-scrollbar { display: none; }
+  .node { flex: 0 0 auto; width: 72px; text-align: center; }
+  .icon {
+    width: 54px; height: 54px; margin: 0 auto; border-radius: 14px;
+    display: grid; place-items: center; font-size: 11px; font-weight: 800;
+    letter-spacing: 0.02em; color: #fff;
+    border: 1px solid rgba(255,255,255,0.12);
+    box-shadow: 0 8px 18px rgba(0,0,0,0.28);
+    animation: floaty 3s ease-in-out infinite;
+  }
+  .node:nth-child(1) .icon { animation-delay: 0s; background: linear-gradient(145deg,#334155,#1e293b); }
+  .node:nth-child(3) .icon { animation-delay: .2s; background: linear-gradient(145deg,#0078D4,#00A4EF); }
+  .node:nth-child(5) .icon { animation-delay: .4s; background: linear-gradient(145deg,#0ea5e9,#0284c7); }
+  .node:nth-child(7) .icon { animation-delay: .6s; background: linear-gradient(145deg,#E25A1C,#f97316); }
+  .node:nth-child(9) .icon { animation-delay: .8s; background: linear-gradient(145deg,#FF3621,#ff6b5a); }
+  .node:nth-child(11) .icon { animation-delay: 1s; background: linear-gradient(145deg,#CC2927,#f24c4a); }
+  .label {
+    margin-top: 6px; font-size: 10px; font-weight: 700; color: #CBD5E1; white-space: nowrap;
+  }
+  .pipe {
+    position: relative; flex: 0 0 22px; height: 4px; margin-bottom: 18px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, rgba(0,164,239,.2), rgba(34,211,238,.7), rgba(0,164,239,.2));
+    overflow: hidden;
+  }
+  .pkt {
+    position: absolute; top: -2px; left: -8px; width: 9px; height: 8px; border-radius: 999px;
+    background: #22D3EE; box-shadow: 0 0 8px #22D3EE;
+    animation: flow 1.8s linear infinite;
+  }
+  .pkt.b { animation-delay: .6s; background: #00A4EF; }
+  .pkt.c { animation-delay: 1.2s; background: #A78BFA; }
+  @keyframes flow {
+    0% { left: -10px; opacity: 0; }
+    15% { opacity: 1; }
+    85% { opacity: 1; }
+    100% { left: calc(100% + 4px); opacity: 0; }
+  }
+  @keyframes floaty {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-3px); }
+  }
+  .caption {
+    text-align: center; font-size: 11px; color: #94A3B8; margin-top: 8px; letter-spacing: 0.03em;
+  }
+  .status {
+    display: flex; align-items: center; gap: 8px; margin-top: 8px;
+    padding: 6px 8px; border-radius: 10px;
+    background: rgba(0,120,212,0.12); border: 1px solid rgba(0,164,239,0.2);
+  }
+  .bar {
+    flex: 1; height: 6px; border-radius: 999px; background: rgba(148,163,184,0.2); overflow: hidden;
+  }
+  .bar span {
+    display: block; height: 100%; width: 42%; border-radius: 999px;
+    background: linear-gradient(90deg,#0078D4,#22D3EE,#0078D4);
+    animation: load 1.4s ease-in-out infinite;
+  }
+  @keyframes load {
+    0% { transform: translateX(-120%); }
+    100% { transform: translateX(280%); }
+  }
+  .status-text { font-size: 10px; color: #7DD3FC; font-weight: 600; white-space: nowrap; }
+</style>
+</head>
+<body>
+  <div class="stage">
+    <div class="live"><span class="dot"></span> LIVE ETL FLOW</div>
+    <div class="track">
+      <div class="node"><div class="icon">SRC</div><div class="label">Source</div></div>
+      <div class="pipe"><span class="pkt"></span><span class="pkt b"></span><span class="pkt c"></span></div>
+      <div class="node"><div class="icon">ADF</div><div class="label">Azure ADF</div></div>
+      <div class="pipe"><span class="pkt"></span><span class="pkt b"></span><span class="pkt c"></span></div>
+      <div class="node"><div class="icon">LAKE</div><div class="label">Data Lake</div></div>
+      <div class="pipe"><span class="pkt"></span><span class="pkt b"></span><span class="pkt c"></span></div>
+      <div class="node"><div class="icon">SPARK</div><div class="label">Apache Spark</div></div>
+      <div class="pipe"><span class="pkt"></span><span class="pkt b"></span><span class="pkt c"></span></div>
+      <div class="node"><div class="icon">DBX</div><div class="label">Databricks</div></div>
+      <div class="pipe"><span class="pkt"></span><span class="pkt b"></span><span class="pkt c"></span></div>
+      <div class="node"><div class="icon">SQL</div><div class="label">SQL</div></div>
     </div>
-    """
-
-
-def _etl_pipe(delay: str = "0s") -> str:
-    return f"""
-    <div class="etl-pipe" style="--d:{delay}">
-      <span class="etl-packet"></span>
-      <span class="etl-packet p2"></span>
-      <span class="etl-packet p3"></span>
+    <div class="caption">Ingest → Orchestrate → Store → Transform → Analyze</div>
+    <div class="status">
+      <div class="bar"><span></span></div>
+      <div class="status-text">Pipeline running · batches loading…</div>
     </div>
-    """
-
-
-def render_etl_animation() -> str:
-    """Live ETL / loading pipeline for the hero."""
-    return f"""
-    <div class="etl-stage" aria-label="Animated data engineering ETL pipeline">
-      <div class="etl-live">
-        <span class="etl-live-dot"></span> LIVE ETL FLOW
-      </div>
-      <div class="etl-track">
-        {_etl_node("source", "Source", ICON_SOURCE, "0s")}
-        {_etl_pipe("0s")}
-        {_etl_node("adf", "Azure ADF", ICON_ADF, "0.2s")}
-        {_etl_pipe("0.35s")}
-        {_etl_node("lake", "Data Lake", ICON_LAKE, "0.45s")}
-        {_etl_pipe("0.55s")}
-        {_etl_node("spark", "Apache Spark", ICON_SPARK, "0.7s")}
-        {_etl_pipe("0.85s")}
-        {_etl_node("dbx", "Databricks", ICON_DATABRICKS, "1s")}
-        {_etl_pipe("1.1s")}
-        {_etl_node("sql", "SQL", ICON_SQL, "1.25s")}
-      </div>
-      <div class="etl-caption">
-        Ingest → Orchestrate → Store → Transform → Analyze
-      </div>
-      <div class="etl-status">
-        <span class="etl-bar"><i></i></span>
-        <span class="etl-status-text">Pipeline running · batches loading…</span>
-      </div>
-    </div>
-    """
+  </div>
+</body>
+</html>
+"""
 
 
 def render_hero() -> None:
@@ -161,10 +182,9 @@ def render_hero() -> None:
 
 
 def render_program_banner() -> None:
-    """Clean program title + animated ETL visual above the chapter TOC."""
-    etl = render_etl_animation()
+    """Clean program title + iframe ETL animation (renders correctly in Streamlit)."""
     st.markdown(
-        f"""
+        """
         <section class="program-banner" aria-label="Program overview">
           <div class="program-banner-head">
             <div class="program-kicker">Official Curriculum</div>
@@ -173,13 +193,11 @@ def render_program_banner() -> None:
               A live, practical learning path across ADF · Databricks · Spark · SQL · Delta Lake
             </p>
           </div>
-          <div class="program-visual">
-            {etl}
-          </div>
         </section>
         """,
         unsafe_allow_html=True,
     )
+    components.html(_etl_iframe_html(), height=210, scrolling=False)
 
 
 def render_toc() -> None:

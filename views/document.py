@@ -295,7 +295,6 @@ def _render_enquiry() -> None:
 def render() -> None:
     render_hero()
     render_program_banner()
-    render_instructors()
     render_toc()
 
     st.markdown('<div class="doc-paper">', unsafe_allow_html=True)
@@ -322,6 +321,9 @@ def render() -> None:
     st.markdown('<hr class="doc-rule" />', unsafe_allow_html=True)
 
     _render_support()
+    st.markdown('<hr class="doc-rule" />', unsafe_allow_html=True)
+
+    render_instructors()
     st.markdown('<hr class="doc-rule" />', unsafe_allow_html=True)
 
     _render_enquiry()

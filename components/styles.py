@@ -92,6 +92,172 @@ button[kind="header"],
 
 .doc-hero-inner { position: relative; z-index: 2; }
 
+/* —— Animated ETL pipeline —— */
+.etl-stage {
+  margin: 1rem 0 0.85rem;
+  padding: 0.9rem 0.75rem 0.85rem;
+  border-radius: 18px;
+  border: 1px solid rgba(0, 164, 239, 0.28);
+  background: linear-gradient(180deg, rgba(8, 16, 32, 0.95), rgba(11, 17, 32, 0.8));
+  box-shadow: inset 0 0 40px rgba(0, 120, 212, 0.08);
+  overflow: hidden;
+}
+.etl-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.68rem;
+  font-weight: 750;
+  letter-spacing: 0.12em;
+  color: #86efac;
+  margin-bottom: 0.75rem;
+}
+.etl-live-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.55);
+  animation: etl-live-blink 1.6s ease-out infinite;
+}
+@keyframes etl-live-blink {
+  0% { box-shadow: 0 0 0 0 rgba(34,197,94,0.55); }
+  70% { box-shadow: 0 0 0 8px rgba(34,197,94,0); }
+  100% { box-shadow: 0 0 0 0 rgba(34,197,94,0); }
+}
+.etl-track {
+  display: flex;
+  align-items: center;
+  gap: 0.15rem;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding: 0.25rem 0.15rem 0.45rem;
+}
+.etl-track::-webkit-scrollbar { display: none; }
+.etl-node {
+  position: relative;
+  flex: 0 0 auto;
+  width: 78px;
+  text-align: center;
+  animation: etl-node-in 0.6s ease both;
+  animation-delay: var(--d, 0s);
+}
+.etl-icon {
+  width: 58px; height: 58px;
+  margin: 0 auto;
+  border-radius: 16px;
+  display: grid; place-items: center;
+  background: rgba(15, 23, 42, 0.95);
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  box-shadow: 0 8px 22px rgba(0,0,0,0.28);
+  position: relative;
+  z-index: 2;
+}
+.etl-svg { width: 36px; height: 36px; display: block; }
+.etl-label {
+  margin-top: 0.35rem;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #CBD5E1;
+  white-space: nowrap;
+}
+.etl-pulse {
+  position: absolute;
+  inset: 4px 10px auto;
+  height: 58px;
+  border-radius: 16px;
+  z-index: 1;
+  opacity: 0.45;
+  animation: etl-glow 2.8s ease-in-out infinite;
+  animation-delay: var(--d, 0s);
+}
+.etl-adf .etl-pulse { background: rgba(0,120,212,0.35); }
+.etl-dbx .etl-pulse { background: rgba(255,54,33,0.3); }
+.etl-spark .etl-pulse { background: rgba(226,90,28,0.3); }
+.etl-sql .etl-pulse { background: rgba(204,41,39,0.28); }
+.etl-lake .etl-pulse { background: rgba(0,164,239,0.28); }
+.etl-source .etl-pulse { background: rgba(34,211,238,0.22); }
+.etl-pipe {
+  position: relative;
+  flex: 0 0 28px;
+  height: 4px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(0,164,239,0.15), rgba(34,211,238,0.55), rgba(0,164,239,0.15));
+  overflow: hidden;
+  margin-bottom: 1.1rem;
+}
+.etl-packet {
+  position: absolute;
+  top: -2px;
+  left: -10px;
+  width: 10px; height: 8px;
+  border-radius: 999px;
+  background: #22D3EE;
+  box-shadow: 0 0 10px #22D3EE;
+  animation: etl-flow 1.8s linear infinite;
+  animation-delay: var(--d, 0s);
+}
+.etl-packet.p2 { animation-delay: calc(var(--d, 0s) + 0.6s); background: #00A4EF; }
+.etl-packet.p3 { animation-delay: calc(var(--d, 0s) + 1.2s); background: #A78BFA; }
+.etl-caption {
+  text-align: center;
+  font-size: 0.72rem;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+  margin-top: 0.35rem;
+}
+.etl-status {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-top: 0.65rem;
+  padding: 0.45rem 0.55rem;
+  border-radius: 10px;
+  background: rgba(0,120,212,0.1);
+  border: 1px solid rgba(0,164,239,0.18);
+}
+.etl-bar {
+  flex: 1;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(148,163,184,0.18);
+  overflow: hidden;
+}
+.etl-bar i {
+  display: block;
+  height: 100%;
+  width: 40%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #0078D4, #22D3EE, #0078D4);
+  background-size: 200% 100%;
+  animation: etl-load 1.4s ease-in-out infinite;
+}
+.etl-status-text {
+  flex: 0 0 auto;
+  font-size: 0.68rem;
+  color: #7DD3FC;
+  font-weight: 600;
+  white-space: nowrap;
+}
+@keyframes etl-flow {
+  0% { left: -12px; opacity: 0; }
+  15% { opacity: 1; }
+  85% { opacity: 1; }
+  100% { left: calc(100% + 4px); opacity: 0; }
+}
+@keyframes etl-load {
+  0% { transform: translateX(-120%); }
+  100% { transform: translateX(280%); }
+}
+@keyframes etl-glow {
+  0%, 100% { opacity: 0.2; transform: scale(0.96); }
+  50% { opacity: 0.55; transform: scale(1.04); }
+}
+@keyframes etl-node-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 .doc-kicker {
   font-size: 0.72rem;
   letter-spacing: 0.16em;
@@ -452,11 +618,20 @@ div[data-testid="stExpander"] details summary p { font-weight: 600 !important; }
     overflow: hidden;
   }
   .doc-hero-glow { opacity: 0.55; animation: none; }
-  .doc-hero-visual { margin-top: 0.35rem; }
-  .doc-hero-core {
-    width: 86px; height: 86px;
-    box-shadow: 0 0 28px rgba(0,164,239,0.35);
+  .etl-stage {
+    margin-top: 0.75rem;
+    padding: 0.75rem 0.55rem 0.7rem;
+    border-radius: 16px;
   }
+  .etl-node { width: 68px; }
+  .etl-icon { width: 50px; height: 50px; border-radius: 14px; }
+  .etl-svg { width: 30px; height: 30px; }
+  .etl-pulse { height: 50px; inset: 2px 8px auto; }
+  .etl-pipe { flex: 0 0 18px; margin-bottom: 1rem; }
+  .etl-label { font-size: 0.58rem; }
+  .etl-caption { font-size: 0.68rem; }
+  .etl-status-text { font-size: 0.62rem; }
+  .etl-packet { animation-duration: 2.1s; }
   .desktop-pills { display: none !important; }
 
   .hero-badges { gap: 0.35rem; margin-bottom: 0.65rem; }
